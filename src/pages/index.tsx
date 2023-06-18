@@ -21,23 +21,24 @@ export default function Home() {
                   <span>Logged in as {sessionData.user?.email}</span>
                 </p>
                 <button
-                  className="outline-green-one hover:text-green-five mb-8 inline-flex cursor-pointer items-center justify-center rounded-md px-4 py-2 font-semibold outline outline-2 outline-offset-2"
+                  className="hover:text-green-five mb-8 inline-flex cursor-pointer items-center justify-center rounded-md px-4 py-2 font-semibold outline outline-2 outline-offset-2 outline-green-700"
                   onClick={() => void signOut()}
                 >
                   Sign out
                 </button>
+
+                <div className="mx-auto mt-4 flex justify-center">
+                  <Image
+                    src="/images/taco.jpg"
+                    width={600}
+                    height={600}
+                    alt="タコス"
+                  />
+                </div>
               </div>
-              <div>
+              <div className="mt-8">
                 <CreateTodo />
                 <Todos />
-              </div>
-              <div className="mx-auto mt-4 flex justify-center">
-                <Image
-                  src="/images/taco.jpg"
-                  width={600}
-                  height={600}
-                  alt="タコス"
-                />
               </div>
             </>
           )}

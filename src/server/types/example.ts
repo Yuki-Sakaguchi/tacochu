@@ -8,3 +8,7 @@ export const createUpdate = z.object({
   id: z.string(),
   text: z.string().max(200, "最大200文字までです"),
 });
+
+export const createDelete = z.object({
+  id: z.string(),
+});

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { api } from "@/utils/api";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, MouseEvent } from "react";
 
 function ShowExample() {
   const example = api.example.getAll.useQuery();
@@ -75,7 +75,8 @@ function AddExample() {
  * データを更新するコンポーネント
  */
 function UpdateExample({ id, text }: { id: string; text: string }) {
-  const mutation = api.example.udpate.useMutation();
+  const updateMutation = api.example.udpate.useMutation();
+  const deleteMutation = api.example.delete.useMutation();
   const utils = api.useContext();
 
   const [updateText, setUpdateText] = useState(text);
@@ -86,8 +87,19 @@ function UpdateExample({ id, text }: { id: string; text: string }) {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    mutation.mutate(
+    updateMutation.mutate(
       { id, text: updateText },
+      {
+        onSuccess() {
+          utils.example.getAll.invalidate();
+        },
+      }
+    );
+  }
+
+  function handleClick(e: MouseEvent<HTMLButtonElement>) {
+    deleteMutation.mutate(
+      { id },
       {
         onSuccess() {
           utils.example.getAll.invalidate();
@@ -107,11 +119,19 @@ function UpdateExample({ id, text }: { id: string; text: string }) {
         />
         <button
           className=" bg-blue-600 px-2 text-white"
-          disabled={mutation.isLoading}
+          disabled={updateMutation.isLoading}
         >
           更新
         </button>
-        {mutation.error && <p>{mutation.error.message}</p>}
+        <button
+          className=" bg-blue-600 px-2 text-white"
+          type="button"
+          onClick={handleClick}
+          disabled={deleteMutation.isLoading}
+        >
+          削除
+        </button>
+        {updateMutation.error && <p>{updateMutation.error.message}</p>}
       </div>
     </form>
   );

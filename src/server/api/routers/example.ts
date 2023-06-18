@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { createInput, createUpdate } from "@/server/types/example";
+import {
+  createDelete,
+  createInput,
+  createUpdate,
+} from "@/server/types/example";
 import { prisma } from "@/server/db";
 
 export const exampleRouter = createTRPCRouter({
@@ -31,5 +35,11 @@ export const exampleRouter = createTRPCRouter({
       },
     });
     return example;
+  }),
+  delete: publicProcedure.input(createDelete).mutation(async ({ input }) => {
+    const { id } = input;
+    await prisma.example.delete({
+      where: { id },
+    });
   }),
 });

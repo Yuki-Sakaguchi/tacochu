@@ -13,3 +13,5 @@
 - Supabase
   - Database（PostgreSQL）
   - Auth
+- Docker
+  - Supabase のローカル環境の実行

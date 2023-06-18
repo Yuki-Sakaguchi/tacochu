@@ -1,5 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { CreateTodo } from "@/components/CreateTodo";
 
 export default function Home() {
   const { data: sessionData, status } = useSession();
@@ -25,7 +26,9 @@ export default function Home() {
                   Sign out
                 </button>
               </div>
-              <div className="text-center">タコスを作りましょう！</div>
+              <div>
+                <CreateTodo />
+              </div>
               <div className="mx-auto mt-4 flex justify-center">
                 <Image
                   src="/images/taco.jpg"

@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Link from "next/link";
 import { api } from "@/utils/api";
+import { useState, ChangeEvent, FormEvent } from "react";
 
 function ShowExample() {
   const example = api.example.getAll.useQuery();
@@ -16,6 +16,43 @@ function ShowExample() {
   );
 }
 
+/**
+ * データを追加するコンポーネント
+ */
+function AddExample() {
+  const mutation = api.example.create.useMutation();
+  const [text, setText] = useState("");
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    setText(e.target.value);
+  }
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    mutation.mutate({ text });
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="flex gap-2">
+        <input
+          className="border"
+          type="text"
+          value={text}
+          onChange={handleChange}
+        />
+        <button
+          className=" bg-blue-600 px-2 text-white"
+          disabled={mutation.isLoading}
+        >
+          追加
+        </button>
+        {mutation.error && <p>{mutation.error.message}</p>}
+      </div>
+    </form>
+  );
+}
+
 export default function Home() {
   return (
     <>
@@ -26,6 +63,9 @@ export default function Home() {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
         <ShowExample />
+        <div className="mt-2">
+          <AddExample />
+        </div>
       </main>
     </>
   );

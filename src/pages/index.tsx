@@ -1,6 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { CreateTodo } from "@/components/CreateTodo";
+import { Todos } from "@/components/Todos";
 
 export default function Home() {
   const { data: sessionData, status } = useSession();
@@ -28,6 +29,7 @@ export default function Home() {
               </div>
               <div>
                 <CreateTodo />
+                <Todos />
               </div>
               <div className="mx-auto mt-4 flex justify-center">
                 <Image

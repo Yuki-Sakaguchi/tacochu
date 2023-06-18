@@ -1,11 +1,9 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import {
-  createDelete,
-  createInput,
-  createUpdate,
-} from "@/server/types/example";
-import { prisma } from "@/server/db";
+  createTRPCRouter,
+  publicProcedure,
+  protectedProcedure,
+} from "@/server/api/trpc";
 
 export const exampleRouter = createTRPCRouter({
   hello: publicProcedure
@@ -15,31 +13,12 @@ export const exampleRouter = createTRPCRouter({
         greeting: `Hello ${input.text}`,
       };
     }),
+
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.example.findMany();
   }),
-  create: publicProcedure.input(createInput).mutation(async ({ input }) => {
-    const example = await prisma.example.create({
-      data: {
-        text: input.text,
-      },
-    });
-    return example;
-  }),
-  udpate: publicProcedure.input(createUpdate).mutation(async ({ input }) => {
-    const { id, text } = input;
-    const example = await prisma.example.update({
-      where: { id },
-      data: {
-        text,
-      },
-    });
-    return example;
-  }),
-  delete: publicProcedure.input(createDelete).mutation(async ({ input }) => {
-    const { id } = input;
-    await prisma.example.delete({
-      where: { id },
-    });
+
+  getSecretMessage: protectedProcedure.query(() => {
+    return "you can now see this secret message!";
   }),
 });

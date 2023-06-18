@@ -8,7 +8,8 @@
   - TypeScript
   - Prisma
   - tRPC
+  - NextAuth.js
   - Tailwind CSS
 - Supabase
-  - Database(PostgreSQL）
+  - Database（PostgreSQL）
   - Auth

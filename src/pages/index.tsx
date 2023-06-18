@@ -29,6 +29,8 @@ function ShowExample() {
  */
 function AddExample() {
   const mutation = api.example.create.useMutation();
+  const utils = api.useContext();
+
   const [text, setText] = useState("");
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -37,7 +39,15 @@ function AddExample() {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    mutation.mutate({ text });
+    mutation.mutate(
+      { text },
+      {
+        onSuccess() {
+          utils.example.getAll.invalidate();
+          setText("");
+        },
+      }
+    );
   }
 
   return (
@@ -61,8 +71,13 @@ function AddExample() {
   );
 }
 
+/**
+ * データを更新するコンポーネント
+ */
 function UpdateExample({ id, text }: { id: string; text: string }) {
   const mutation = api.example.udpate.useMutation();
+  const utils = api.useContext();
+
   const [updateText, setUpdateText] = useState(text);
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -71,7 +86,14 @@ function UpdateExample({ id, text }: { id: string; text: string }) {
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    mutation.mutate({ id, text: updateText });
+    mutation.mutate(
+      { id, text: updateText },
+      {
+        onSuccess() {
+          utils.example.getAll.invalidate();
+        },
+      }
+    );
   }
 
   return (

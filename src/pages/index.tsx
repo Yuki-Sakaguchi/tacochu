@@ -4,11 +4,17 @@ import { useState, ChangeEvent, FormEvent } from "react";
 
 function ShowExample() {
   const example = api.example.getAll.useQuery();
+
   if (!example.data) return <p>Loading ...</p>;
+
+  const displayExample = example.data.sort((a, b) =>
+    a.updatedAt > b.updatedAt ? -1 : 1
+  );
+
   return (
     <div>
       <ul>
-        {example.data.map((example) => (
+        {displayExample.map((example) => (
           <li className="mt-2" key={example.id}>
             <UpdateExample id={example.id} text={example.text} />
           </li>

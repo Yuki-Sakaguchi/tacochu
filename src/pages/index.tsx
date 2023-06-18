@@ -9,7 +9,9 @@ function ShowExample() {
     <div>
       <ul>
         {example.data.map((example) => (
-          <li key={example.id}>{example.text}</li>
+          <li className="mt-2" key={example.id}>
+            <UpdateExample id={example.id} text={example.text} />
+          </li>
         ))}
       </ul>
     </div>
@@ -46,6 +48,40 @@ function AddExample() {
           disabled={mutation.isLoading}
         >
           追加
+        </button>
+        {mutation.error && <p>{mutation.error.message}</p>}
+      </div>
+    </form>
+  );
+}
+
+function UpdateExample({ id, text }: { id: string; text: string }) {
+  const mutation = api.example.udpate.useMutation();
+  const [updateText, setUpdateText] = useState(text);
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    setUpdateText(e.target.value);
+  }
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    mutation.mutate({ id, text: updateText });
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="flex gap-2">
+        <input
+          className="border"
+          type="text"
+          value={updateText}
+          onChange={handleChange}
+        />
+        <button
+          className=" bg-blue-600 px-2 text-white"
+          disabled={mutation.isLoading}
+        >
+          更新
         </button>
         {mutation.error && <p>{mutation.error.message}</p>}
       </div>

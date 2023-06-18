@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { createInput } from "@/server/types/example";
+import { createInput, createUpdate } from "@/server/types/example";
 import { prisma } from "@/server/db";
 
 export const exampleRouter = createTRPCRouter({
@@ -18,6 +18,16 @@ export const exampleRouter = createTRPCRouter({
     const example = await prisma.example.create({
       data: {
         text: input.text,
+      },
+    });
+    return example;
+  }),
+  udpate: publicProcedure.input(createUpdate).mutation(async ({ input }) => {
+    const { id, text } = input;
+    const example = await prisma.example.update({
+      where: { id },
+      data: {
+        text,
       },
     });
     return example;

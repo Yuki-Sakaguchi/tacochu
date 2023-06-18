@@ -127,7 +127,7 @@ export default function Home() {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
         <ShowExample />
-        <div className="mt-2">
+        <div className="mt-6">
           <AddExample />
         </div>
       </main>

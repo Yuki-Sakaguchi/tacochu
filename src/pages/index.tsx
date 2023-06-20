@@ -2,13 +2,14 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { CreateTodo } from "@/components/CreateTodo";
 import { Todos } from "@/components/Todos";
+import { Layout } from "@/components/Layout";
 
 export default function Home() {
   const { data: sessionData, status } = useSession();
   return (
-    <>
-      <div className="bg-olive-one selection:bg-green-two min-h-screen p-0 md:px-8 md:py-24">
-        <main className="bg-cream-four md:outline-cream-four mx-auto min-h-screen max-w-none rounded-none px-5 pb-10 pt-24 outline-none md:max-w-[60rem] md:rounded-2xl md:px-8 md:outline md:outline-4 md:outline-offset-8">
+    <Layout>
+      <div className="bg-olive-one selection:bg-green-two min-h-screen p-0 md:px-8 ">
+        <main className="bg-cream-four md:outline-cream-four mx-auto min-h-screen max-w-none rounded-none px-5 pb-10 pt-12 outline-none md:max-w-[60rem] md:rounded-2xl md:px-8 md:outline md:outline-4 md:outline-offset-8">
           <h1 className="text-gray-three mb-6 text-center text-4xl font-bold">
             🌮 Tacochu 🌮
           </h1>
@@ -69,6 +70,6 @@ export default function Home() {
           )}
         </main>
       </div>
-    </>
+    </Layout>
   );
 }

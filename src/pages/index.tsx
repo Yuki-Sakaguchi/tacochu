@@ -3,6 +3,54 @@ import Image from "next/image";
 import { CreateTodo } from "@/components/CreateTodo";
 import { Todos } from "@/components/Todos";
 import { Layout } from "@/components/Layout";
+import { type User } from "next-auth";
+
+function LoggedIn({ user }: { user: User }) {
+  return (
+    <>
+      <div className="flex flex-col items-center">
+        <p className="text-l mb-4 text-center text-white">
+          <span>Logged in as {user?.email}</span>
+        </p>
+        <button
+          className="hover:text-green-five mb-8 inline-flex cursor-pointer items-center justify-center rounded-md px-4 py-2 font-semibold outline outline-2 outline-offset-2 outline-green-700"
+          onClick={() => void signOut()}
+        >
+          Sign out
+        </button>
+
+        <div className="mx-auto mt-4 flex justify-center">
+          <Image src="/images/taco.jpg" width={600} height={600} alt="タコス" />
+        </div>
+      </div>
+      <div className="mt-8">
+        <CreateTodo />
+        <Todos />
+      </div>
+    </>
+  );
+}
+
+function LoggedOut() {
+  return (
+    <div className="flex flex-col items-center">
+      <button
+        className="outline-green-one hover:text-green-five mb-5 inline-flex cursor-pointer items-center justify-center rounded-md px-4 py-2 font-semibold outline outline-2 outline-offset-2"
+        onClick={() => void signIn()}
+      >
+        Sign In
+      </button>
+      <div className="mb-5 text-xl">
+        <p className="text-gray-four text-center">
+          火曜日はタコス作りましょう！
+        </p>
+      </div>
+      <div className="">
+        <Image src="/images/taco.jpg" width={600} height={600} alt="タコス" />
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const { data: sessionData, status } = useSession();
@@ -16,57 +64,12 @@ export default function Home() {
           {status !== "loading" && sessionData && (
             // status が "loading" でない、つまり認証情報の取得が完了している、
             // かつ、認証されている場合に、下記が表示されます
-            <>
-              <div className="flex flex-col items-center">
-                <p className="text-l mb-4 text-center text-white">
-                  <span>Logged in as {sessionData.user?.email}</span>
-                </p>
-                <button
-                  className="hover:text-green-five mb-8 inline-flex cursor-pointer items-center justify-center rounded-md px-4 py-2 font-semibold outline outline-2 outline-offset-2 outline-green-700"
-                  onClick={() => void signOut()}
-                >
-                  Sign out
-                </button>
-
-                <div className="mx-auto mt-4 flex justify-center">
-                  <Image
-                    src="/images/taco.jpg"
-                    width={600}
-                    height={600}
-                    alt="タコス"
-                  />
-                </div>
-              </div>
-              <div className="mt-8">
-                <CreateTodo />
-                <Todos />
-              </div>
-            </>
+            <LoggedIn user={sessionData.user} />
           )}
           {status !== "loading" && !sessionData && (
             // status が "loading" でない、つまり認証情報の取得が完了している、
             // かつ、認証されていない場合に、下記が表示されます
-            <div className="flex flex-col items-center">
-              <button
-                className="outline-green-one hover:text-green-five mb-5 inline-flex cursor-pointer items-center justify-center rounded-md px-4 py-2 font-semibold outline outline-2 outline-offset-2"
-                onClick={() => void signIn()}
-              >
-                Sign In
-              </button>
-              <div className="mb-5 text-xl">
-                <p className="text-gray-four text-center">
-                  火曜日はタコス作りましょう！
-                </p>
-              </div>
-              <div className="">
-                <Image
-                  src="/images/taco.jpg"
-                  width={600}
-                  height={600}
-                  alt="タコス"
-                />
-              </div>
-            </div>
+            <LoggedOut />
           )}
         </main>
       </div>

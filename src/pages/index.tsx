@@ -4,6 +4,7 @@ import { CreateTodo } from "@/components/CreateTodo";
 import { Todos } from "@/components/Todos";
 import { Layout } from "@/components/Layout";
 import { type User } from "next-auth";
+import Link from "next/link";
 
 function LoggedIn({ user }: { user: User }) {
   return (
@@ -24,8 +25,7 @@ function LoggedIn({ user }: { user: User }) {
         </div>
       </div>
       <div className="mt-8">
-        <CreateTodo />
-        <Todos />
+        <Link href="/recipe/carne_asada">カルネアサダ</Link>
       </div>
     </>
   );
